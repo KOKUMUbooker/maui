@@ -1,4 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using KPCLib;
+using PasswordManagementApp.Services;
+using PasswordManagementApp.Views;
+using PasswordManagementApp.ViewModels;
+using User = PassXYZLib.User;
 
 namespace PasswordManagementApp;
 
@@ -11,14 +16,32 @@ public static class MauiProgram
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
+				fonts.AddFont("fa-regular-400.ttf", "FontAwesomeRegular");
+				fonts.AddFont("fa-solid-900.ttf", "FontAwesomeSolid");
+				fonts.AddFont("fa-brands-400.ttf", "FontAwesomeBrands");
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+				fonts.AddFont("OpenSans-SemiBold.ttf", "OpenSansSemiBold");
 			});
 
 #if DEBUG
 		builder.Logging.AddDebug();
+		builder.Logging.SetMinimumLevel(LogLevel.Debug);
 #endif
+        builder.Services.AddSingleton<IDataStore<Item>, DataStore>();
+        builder.Services.AddSingleton<IUserService<User>, UserService>();
+        builder.Services.AddSingleton<LoginService>();
+        builder.Services.AddSingleton<LoginViewModel>();
+        builder.Services.AddSingleton<LoginPage>();
+        builder.Services.AddSingleton<SignUpPage>();
+        builder.Services.AddSingleton<ItemDetailViewModel>();
+        builder.Services.AddSingleton<ItemDetailPage>();
+        builder.Services.AddSingleton<NewItemViewModel>();
+        builder.Services.AddSingleton<NewItemPage>();
+        builder.Services.AddSingleton<AboutViewModel>();
+        builder.Services.AddSingleton<AboutPage>();
+        builder.Services.AddTransient<ItemsViewModel>();
+        builder.Services.AddTransient<ItemsPage>();
 
-		return builder.Build();
+        return builder.Build();
 	}
 }
