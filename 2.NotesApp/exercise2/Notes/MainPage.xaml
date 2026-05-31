@@ -6,8 +6,7 @@
 
     <VerticalStackLayout 
         Padding="{OnPlatform iOS='30,60,30,30', Default='30'}"
-        BackgroundColor="{OnPlatform WinUI=Yellow, iOS=Silver, Android=Green}"
-        >
+        BackgroundColor="{OnPlatform WinUI=Yellow, iOS=Silver, Android=Green}">
         <Label
                Text="Notes"
                FontSize="{mycode:GlobalFontSize}"
