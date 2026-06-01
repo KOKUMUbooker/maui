@@ -1,7 +1,10 @@
 ﻿namespace WeatherClient.Models;
 
-public readonly record struct WeatherData(int Temperature,
-                                          int Precipitation,
-                                          int Humidity,
-                                          int Wind,
-                                          WeatherType Condition);
+public class WeatherData
+{
+    public int Temperature { get; set; }
+    public int Precipitation { get; set; }
+    public int Humidity { get; set; }
+    public int Wind { get; set; }
+    public WeatherType Condition { get; set; }
+}
