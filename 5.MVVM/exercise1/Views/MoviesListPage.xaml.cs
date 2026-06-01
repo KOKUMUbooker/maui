@@ -7,16 +7,21 @@ public partial class MoviesListPage : ContentPage
 		InitializeComponent();
 	}
 
-    private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
-    {
-		ViewModels.MovieViewModel movie = (ViewModels.MovieViewModel)e.Item;
-		await Navigation.PushAsync(new Views.MovieDetailPage(movie));
-    }
-
     private void MenuItem_Clicked(object sender, EventArgs e)
     {
         MenuItem menuItem = (MenuItem)sender;
         ViewModels.MovieViewModel movie = (ViewModels.MovieViewModel)menuItem.BindingContext;
         App.MainViewModel?.DeleteMovie(movie);
+    }
+
+    private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.Count == 0)
+            return;
+
+        await Navigation.PushAsync(new Views.MovieDetailPage());
+
+        // Deselect
+        ((CollectionView)sender).SelectedItem = null;
     }
 }
