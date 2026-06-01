@@ -7,15 +7,22 @@
              x:DataType="vm:MovieListViewModel"
              Title="Movies"
              BindingContext="{x:Static local:App.MainViewModel}">
-    <ListView ItemsSource="{Binding Movies}" SelectedItem="{Binding SelectedMovie, Mode=OneWayToSource}" Margin="10" ItemTapped="ListView_ItemTapped">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="{Binding Title}" x:DataType="vm:MovieViewModel">
-                    <TextCell.ContextActions>
-                        <MenuItem Text="Delete" IsDestructive="True" Clicked="MenuItem_Clicked" />
-                    </TextCell.ContextActions>
-                </TextCell>
+    <CollectionView 
+        ItemsSource="{Binding Movies}" 
+        SelectionMode="Single"
+        Margin="10"
+        SelectedItem="{Binding SelectedMovie, Mode=OneWayToSource}"  
+        SelectionChanged="CollectionView_SelectionChanged">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="vm:MovieViewModel">
+                <Grid ColumnDefinitions="*,Auto" Padding="10">
+                    <Label Text="{Binding Title}" />
+                    <Button Grid.Column="1"
+                        Text="Delete"
+                        CommandParameter="{Binding}"
+                        Command="{Binding DeleteMovieCommand, Source={x:Static local:App.MainViewModel}}"/>
+                </Grid>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>
