@@ -7,15 +7,15 @@ public class PersonRepository
 {
     string _dbPath;
     public string StatusMessage { get; set; }
-    private SQLiteConnection conn;
+    private SQLiteAsyncConnection conn;
 
-    private void Init()
+    private async Task Init()
     {
         if (conn != null)
             return;
 
-        conn = new SQLiteConnection(_dbPath);
-        conn.CreateTable<Person>();
+        conn = new SQLiteAsyncConnection(_dbPath);
+        await conn.CreateTableAsync<Person>();
     }
 
     public PersonRepository(string dbPath)
@@ -23,18 +23,18 @@ public class PersonRepository
         _dbPath = dbPath;                        
     }
 
-    public void AddNewPerson(string name)
+    public async Task AddNewPerson(string name)
     {            
         int result = 0;
         try
         {
-            Init();
+            await Init();
 
             // basic validation to ensure a name was entered
             if (string.IsNullOrEmpty(name))
                 throw new Exception("Valid name required");
 
-            result = conn.Insert(new Person { Name = name });
+            result = await conn.InsertAsync(new Person { Name = name });
 
             StatusMessage = string.Format("{0} record(s) added (Name: {1})", result, name);
         }
@@ -42,15 +42,14 @@ public class PersonRepository
         {
             StatusMessage = string.Format("Failed to add {0}. Error: {1}", name, ex.Message);
         }
-
     }
 
-    public List<Person> GetAllPeople()
+    public async Task<List<Person>> GetAllPeople()
     {
         try
         {
-            Init();
-            return conn.Table<Person>().ToList();
+            await Init();
+            return await conn.Table<Person>().ToListAsync();
         }
         catch (Exception ex)
         {
